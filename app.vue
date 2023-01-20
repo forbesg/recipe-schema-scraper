@@ -6,7 +6,7 @@
     <!-- <div class="container">
       <RecipeForm />
     </div> -->
-    <NuxtPage class="container min-h-vh" />
+    <NuxtPage class="container" />
   </div>
 </template>
 

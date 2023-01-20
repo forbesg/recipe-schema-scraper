@@ -18,11 +18,12 @@
     </Head>
 
     <div
-      class="self-baseline md:sticky top-6 bg-cover bg-center meta text-sm md:text-base lg:p-12"
+      class="self-baseline lg:sticky top-6 bg-cover bg-center meta text-sm md:text-base lg:p-12"
     >
-      <h2 class="text-3xl mb-8 col-span-2 font-medium lg:text-4xl">
-        {{ recipe.title }}
-      </h2>
+      <h2
+        v-html="recipe.title"
+        class="text-3xl mb-8 col-span-2 font-medium lg:text-4xl"
+      ></h2>
       <div class="recipe-meta text-xs font-medium text-gray-600">
         <div v-if="recipe.serves">
           Serves:
@@ -58,7 +59,7 @@
         />
       </div>
     </div>
-    <div class="bg-white rounded-lg p-8 mb-16 md:p-12">
+    <div class="bg-white rounded-lg p-8 mb-16 md:mb-6 md:p-12">
       <div>
         <div class="mb-12">
           <h3 class="text-lg lg:text-xl font-medium mb-4">Ingredients</h3>
@@ -83,7 +84,7 @@
           </ol>
         </div>
         <div
-          class="bg-white fixed bottom-0 left-0 w-full py-4 flex items-center justify-center text-center md:static"
+          class="bg-white fixed bottom-0 left-0 w-full py-4 px-6 md:px-0 flex items-center justify-center text-center md:static"
         >
           <button
             class="flex-1 flex justify-center"

@@ -7,6 +7,7 @@
   const currentRecipe = useState<object | null>("recipe", () => null);
 
   async function handleFormSubmit() {
+    if (!urlInput) return;
     loading.value = true;
     url.value = urlInput;
     try {
