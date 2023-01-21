@@ -12,10 +12,6 @@
     router.push("/");
   }
 
-  const {
-    params: { slug },
-  } = useRoute();
-
   const clearRecipe = () => {
     router.push("/");
     recipe.value = null;

@@ -9,6 +9,24 @@
       required: true,
     },
   });
+  const currentRecipe = useState("recipe");
+  const saveRecipe = () => {
+    if (window?.localStorage) {
+      const localSavedRecipes = JSON.parse(
+        localStorage.getItem("rs-saved-recipes") || "[]"
+      );
+
+      const savedRecipe = { ...props.recipe };
+      savedRecipe.saved = true;
+      localSavedRecipes.push(savedRecipe);
+
+      localStorage.setItem(
+        "rs-saved-recipes",
+        JSON.stringify(localSavedRecipes)
+      );
+      currentRecipe.value = savedRecipe;
+    }
+  };
 </script>
 
 <template>
@@ -24,16 +42,23 @@
         v-html="recipe.title"
         class="text-3xl mb-8 col-span-2 font-medium lg:text-4xl"
       ></h2>
-      <div class="recipe-meta text-xs font-medium text-gray-600">
-        <div v-if="recipe.serves">
-          Serves:
-          {{ Array.isArray(recipe.serves) ? recipe.serves[0] : recipe.serves }}
+      <div class="flex flex-wrap justify-between mb-8">
+        <div class="recipe-meta text-xs font-medium text-gray-600 mb-4">
+          <div v-if="recipe.serves">
+            Serves:
+            {{
+              Array.isArray(recipe.serves) ? recipe.serves[0] : recipe.serves
+            }}
+          </div>
+          <div v-if="recipe.time" class="">
+            <div v-if="recipe.time.prep">Prep Time: {{ recipe.time.prep }}</div>
+            <div v-if="recipe.time.cook">Cook Time: {{ recipe.time.cook }}</div>
+            <div v-if="recipe.time.total">Time: {{ recipe.time.total }}</div>
+          </div>
         </div>
-        <div v-if="recipe.time" class="mb-8">
-          <div v-if="recipe.time.prep">Prep Time: {{ recipe.time.prep }}</div>
-          <div v-if="recipe.time.cook">Cook Time: {{ recipe.time.cook }}</div>
-          <div v-if="recipe.time.total">Time: {{ recipe.time.total }}</div>
-        </div>
+        <button v-if="!recipe.saved" class="h-fit" @click="() => saveRecipe()">
+          Save Recipe
+        </button>
       </div>
 
       <div class="description my-4 text-sm md:text-base mb-8">
@@ -66,7 +91,7 @@
 
           <ul>
             <li v-for="(ingredient, index) in recipe.ingredients" :key="index">
-              {{ ingredient }}
+              <span v-html="ingredient"></span>
             </li>
           </ul>
         </div>
@@ -79,7 +104,7 @@
           ></div>
           <ol v-else>
             <li v-for="(step, index) in recipe.method" :key="`step-${index}`">
-              {{ step }}
+              <span v-html="step"></span>
             </li>
           </ol>
         </div>

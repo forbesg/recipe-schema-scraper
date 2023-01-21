@@ -45,27 +45,6 @@ export default defineEventHandler(async (event) => {
     image: string[] | string;
   }
 
-  interface Recipe {
-    title: String;
-    description: string;
-    cuisine: string;
-    ingredients: Array<string> | null;
-    method: Array<string> | Object;
-    serves: string | null;
-    rating: {
-      average: Number;
-      count: Number;
-      total: Number;
-    };
-    self_url: string;
-    time: {
-      prep: string | null;
-      cook: string | null;
-      total: string | null;
-    };
-    image: string;
-  }
-
   function scrapeRecipeSchema($: CheerioAPI) {
     const recipe: Recipe = {
       title: "",
@@ -86,6 +65,8 @@ export default defineEventHandler(async (event) => {
         total: null,
       },
       image: "",
+      slug: "",
+      saved: false,
     };
     /**
      *  Load Recipe Schema and populate recipe data from that
@@ -114,6 +95,8 @@ export default defineEventHandler(async (event) => {
     recipe.ingredients = recipeData.recipeIngredient;
     recipe.method = formatMethodSchema(recipeData.recipeInstructions);
     recipe.time = { prep: null, cook: null, total: null };
+    recipe.slug = recipe.title.toLowerCase().trim().replaceAll(" ", "-");
+    recipe.saved = false;
     if (recipeData.prepTime && recipeData.cookTime) {
       let prepTime: any, cookTime: any;
       try {
