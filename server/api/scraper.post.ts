@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
   }
 
   interface RecipeSchema {
-    name: String;
+    name: string;
     description: string;
     recipeYield: string;
     recipeIngredient: Array<string>;

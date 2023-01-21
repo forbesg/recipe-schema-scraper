@@ -41,15 +41,6 @@
             >View Recipe</a
           >
         </div>
-        <!-- <nuxt-link
-          :to="{
-            path: `/${savedRecipe.title
-              .toLowerCase()
-              .trim()
-              .replaceAll(' ', '-')}`,
-          }"
-          >View Recipe</nuxt-link
-        > -->
       </div>
     </div>
   </div>
@@ -62,16 +53,16 @@
 
   const handleSavedRecipeView = (slug: string) => {
     const selectedRecipe = savedRecipes.value.find((r) => r.slug === slug);
-    console.log("Selected Recipe", selectedRecipe);
-    currentRecipe.value = selectedRecipe;
-    router.push(`/${selectedRecipe.slug}`);
+    if (selectedRecipe) {
+      currentRecipe.value = selectedRecipe;
+      router.push(`/${selectedRecipe.slug}`);
+    }
   };
   onMounted(() => {
     if (window?.localStorage) {
       const localRecipes = JSON.parse(
         localStorage.getItem("rs-saved-recipes") || "[]"
       );
-      console.log(localRecipes, savedRecipes.value);
       savedRecipes.value = localRecipes;
     }
   });

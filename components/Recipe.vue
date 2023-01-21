@@ -59,6 +59,12 @@
         <button v-if="!recipe.saved" class="h-fit" @click="() => saveRecipe()">
           Save Recipe
         </button>
+        <span v-else class="h-fit p-4 font-semibold flex items-center"
+          ><span
+            class="inline-flex justify-center items-center w-6 h-6 text-center rounded-full bg-green-700 text-white text-lg mr-1"
+            ><span>&check;</span></span
+          >Saved</span
+        >
       </div>
 
       <div class="description my-4 text-sm md:text-base mb-8">

@@ -1,8 +1,13 @@
 export default {};
 
 declare global {
+  interface RecipeImage {
+    url: string;
+    thumbnail: string | null;
+  }
+
   interface Recipe {
-    title: String;
+    title: string;
     description: string;
     cuisine: string;
     ingredients: Array<string> | null;
@@ -19,7 +24,7 @@ declare global {
       cook: string | null;
       total: string | null;
     };
-    image: string;
+    image: RecipeImage | string | any;
     slug: string;
     saved: boolean;
   }
