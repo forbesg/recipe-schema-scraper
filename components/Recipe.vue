@@ -114,6 +114,9 @@
             </li>
           </ol>
         </div>
+        <div v-if="!recipe.saved" class="text-right mb-6">
+          <button @click="saveRecipe()">Save Recipe</button>
+        </div>
         <div
           class="bg-white fixed bottom-0 left-0 w-full py-4 px-6 md:px-0 flex items-center justify-center text-center md:static"
         >
@@ -121,7 +124,8 @@
             class="flex-1 flex justify-center"
             @click="() => clearRecipe()"
           >
-            Clear
+            <span v-if="!recipe.saved">Clear</span>
+            <span v-else>Back</span>
           </button>
           <a
             :href="recipe.self_url"

@@ -73,8 +73,6 @@ export default defineEventHandler(async (event) => {
      */
     const schemaJSON = $("script[type='application/ld+json']")
       .map((i, el) => {
-        console.log(el.children[0].type);
-
         return JSON.parse((el.children[0] as unknown as Text).data);
       })
       .filter((i, el) => {
@@ -163,6 +161,6 @@ export default defineEventHandler(async (event) => {
     }
   } catch (err) {
     console.log(err);
-    return { statusCode: 401, error: "Invalid URI" };
+    return { statusCode: 401, error: "Invalid Link Submitted" };
   }
 });

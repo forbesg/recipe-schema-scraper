@@ -4,10 +4,12 @@
   const url = ref("");
   const parseError = ref("");
   const loading = ref(false);
+  const savedRecipes = useState<Recipe[]>("savedRecipes");
   const currentRecipe = useState<object | null>("recipe", () => null);
 
   async function handleFormSubmit() {
     if (!urlInput) return;
+    parseError.value = "";
     loading.value = true;
     url.value = urlInput;
     try {
@@ -16,11 +18,11 @@
         method: "post",
         body: { data: { url } },
         server: false,
-        // immediate: false,
       });
 
       if (data?.value?.error) {
         parseError.value = data.value.error;
+        loading.value = false;
         return;
       }
 
@@ -28,27 +30,34 @@
 
       if (error.value) {
         parseError.value = error.value.message;
+        loading.value = false;
         return;
       }
 
       if (data && data.value && data.value.recipe) {
         const { recipe } = data.value;
 
-        // useState<object>("recipe", () => recipe);
-        currentRecipe.value = recipe;
-
         const { title } = recipe;
 
-        const slug: String = title ? title : "";
+        const slug: string = title
+          ? title.toLowerCase().trim().replaceAll(" ", "-")
+          : "";
         if (!slug) {
           parseError.value = "Unable to parse the recipe";
           return;
         }
-        router.push(
-          `/${encodeURIComponent(
-            slug.toLowerCase().trim().replaceAll(" ", "-")
-          )}`
-        );
+
+        /**
+         * Check slug against localRecipes
+         */
+        const savedRecipe = savedRecipes.value.find((r) => r.slug === slug);
+        if (savedRecipe) {
+          currentRecipe.value = savedRecipe;
+        } else {
+          currentRecipe.value = recipe;
+        }
+
+        router.push(`/${encodeURIComponent(slug)}`);
       }
     } catch (err) {
       console.log(err);
@@ -104,10 +113,13 @@
           </svg>
           Loading...
         </button>
+        <div
+          v-if="parseError"
+          class="bg-red-700 text-white font-medium p-4 lg:px-6 mt-4"
+        >
+          <span>{{ parseError }}</span>
+        </div>
       </form>
-      <div v-if="parseError" class="bg-red-600 text-white p-6 lg:px-12 mt-6">
-        <span>{{ parseError }}</span>
-      </div>
     </div>
   </div>
 </template>
