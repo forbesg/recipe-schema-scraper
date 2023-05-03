@@ -77,7 +77,7 @@ export default defineEventHandler(async (event) => {
       })
       .filter((i, el) => {
         return (
-          el["@type"] === "Recipe" ||
+          el["@type"].toLowerCase() === "recipe" ||
           (el["@type"] &&
             el["@type"].includes &&
             el["@type"].includes("Recipe"))
