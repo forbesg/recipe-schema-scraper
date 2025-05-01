@@ -84,6 +84,7 @@ export default defineEventHandler(async (event) => {
         );
       });
     const recipeData = (schemaJSON["0"] as RecipeSchema) || null;
+    console.log(recipeData);
 
     if (!recipeData) {
       return null;
