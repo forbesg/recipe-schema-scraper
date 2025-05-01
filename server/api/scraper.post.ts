@@ -1,5 +1,5 @@
-import fetch from "node-fetch";
-import { CheerioAPI, load } from "cheerio";
+import type { CheerioAPI } from "cheerio";
+import { load } from "cheerio";
 import { parse } from "iso8601-duration";
 
 export default defineEventHandler(async (event) => {
@@ -147,7 +147,6 @@ export default defineEventHandler(async (event) => {
   try {
     const response = await fetch(url);
     const html = await response.text();
-    console.log(html);
 
     const $ = load(html);
     const parsedRecipe = scrapeRecipeSchema($);
@@ -155,7 +154,8 @@ export default defineEventHandler(async (event) => {
     if (!parsedRecipe) {
       return {
         statusCode: 401,
-        error: "Failed to parse recipe. This site may not be supported",
+        error:
+          "Failed to parse recipe. This site may not be supported or be blocking the request",
       };
     } else {
       console.log("!NEED TO GET THE RATING!");
