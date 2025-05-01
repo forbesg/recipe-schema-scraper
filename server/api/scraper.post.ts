@@ -146,6 +146,7 @@ export default defineEventHandler(async (event) => {
   try {
     const response = await fetch(url);
     const html = await response.text();
+    console.log(html);
 
     const $ = load(html);
     const parsedRecipe = scrapeRecipeSchema($);
